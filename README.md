@@ -114,21 +114,25 @@ Kali (Attacker)                Target PC                    Splunk Server
 
 | Event ID | Description | Analyst Significance |
 |---|---|---|
-| `4625` | An account failed to log on | High-frequency repeats from one source IP = brute-force indicator |
+| `4625` | An account failed to log on | High-frequency repeats from one source IP = brute-force indicator | 
 | `4624` | An account was successfully logged on | Confirms compromise; anchor point for tracing post-logon activity |
 
 **Detection Logic:** A high volume of `4625` events for a single account within a short time window, followed immediately by a `4624` for that same account, is a reliable signature that a brute-force attempt succeeded - and is easily operationalized as a scheduled Splunk correlation search / alert.
 
 ## Output Example
-
-
+### 4625 Output
+![alt text](https://github.com/jmesmcg/Brute-Force-Attack-Simulation-and-SIEM-Based-Detection-in-AD/blob/dd6c1a95164bbeee23b4af7d9337e3388554b59f/Screenshots/Screenshot%204.png)
+### 4624 Output
+![alt text](https://github.com/jmesmcg/Brute-Force-Attack-Simulation-and-SIEM-Based-Detection-in-AD/blob/dd6c1a95164bbeee23b4af7d9337e3388554b59f/Screenshots/Screenshot%201.png)
+### Kali Output
+![alt text](https://github.com/jmesmcg/Brute-Force-Attack-Simulation-and-SIEM-Based-Detection-in-AD/blob/dd6c1a95164bbeee23b4af7d9337e3388554b59f/Screenshots/Screenshot%205.png)
 
 ## Lessons Learned
 
 - **Windows Event Log fundamentals** - how logon events, security IDs, and network information fields tie an authentication event back to a specific source
 - **SIEM log correlation** - pairing `4625` and `4624` events by account and time window turns raw logs into an actual detection
 - **Sysmon configuration** - deploying a community-hardened config (Olaf Hartong) instead of default logging dramatically increases telemetry fidelity
-- **Attacker-side tooling** - how Crowbar structures RDP brute-force attempts and why targeted wordlists (not just raw rockyou.txt) matter for realistic testing
+- **Attacker-side tooling** - how Hydra structures RDP brute-force attempts and why targeted wordlists (not just raw rockyou.txt) matter for realistic testing
 - **Splunk forwarder architecture** - how `inputs.conf` on the Universal Forwarder controls exactly what telemetry reaches the indexer
 
 ## Next Steps
